@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>archivo-hueco</title>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!--css-->
+    <style>
+
+        body {
+            background-color: #f5f0e8;
+            font-family: 'Lora', serif;
+            color: #3b2f2f;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background-color: #fdfaf5 !important;
+            border-bottom: 1px solid #d4c5b0;
+            padding: 1rem 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-style: italic;
+            color: #3b2f2f !important;
+        }
+
+        .nav-link {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #3b2f2f !important;
+        }
+
+        .nav-link:hover {
+            color: #9e5a3b !important;
+        }
+
+        .nav-cuentos {
+            color: #9e5a3b !important;
+            border: 1px solid #9e5a3b;
+            border-radius: 4px;
+            padding: 0.3rem 0.8rem !important;
+            align-self: center;
+        }
+
+        .nav-cuentos:hover {
+            background-color: #9e5a3b !important;
+            color: #fdfaf5 !important;
+        }
+
+        /* --- ACCORDION --- */
+        .accordion-item {
+            background-color: #fdfaf5;
+            border: 1px solid #d4c5b0;
+        }
+
+        .accordion-button {
+            background-color: #fdfaf5;
+            color: #3b2f2f;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: #ede8df;
+            color: #3b2f2f;
+            box-shadow: none;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #3b2f2f;
+            color: #fdfaf5;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        /* --- ESTILO HERO (compartido por todas las secciones principales) --- */
+        .seccion-icono {
+            font-size: 3rem;
+            margin-bottom: 0;
+        }
+
+        .seccion-titulo {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .seccion-subtitulo {
+            font-size: 1.2rem;
+            color: #9e5a3b;
+            font-style: italic;
+        }
+
+        .seccion-separador {
+            width: 60px;
+            border: 2px solid #9e5a3b;
+            opacity: 1;
+            margin: 1.5rem 0;
+        }
+
+        .seccion-separador.centrado {
+            margin: 1.5rem auto;
+        }
+
+        /* --- SECCIONES --- */
+        .seccion {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 3rem 2rem;
+        }
+
+        .seccion.centrada {
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+        }
+
+        .seccion-oculta {
+            display: none !important;
+        }
+
+        /* --- BIENVENIDA --- */
+        .bienvenida {
+            border-left: 4px solid #9e5a3b;
+            padding: 1rem;
+        }
+
+        /* --- CUENTOS RESUMEN --- */
+        .cuento-card {
+            background-color: #fdfaf5;
+            border: 1px solid #d4c5b0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            max-width: 750px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .cuento-card-imagen {
+            width: 200px;
+            min-width: 200px;
+            object-fit: cover;
+            border-right: 1px solid #d4c5b0;
+        }
+
+        .cuento-card-contenido {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 576px) {
+            .cuento-card {
+                flex-direction: column;
+            }
+            .cuento-card-imagen {
+                width: 100%;
+                min-width: unset;
+                height: 180px;
+                border-right: none;
+                border-bottom: 1px solid #d4c5b0;
+            }
+        }
+
+        .cuento-card-titulo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .cuento-card-autor {
+            font-style: italic;
+            color: #9e5a3b;
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .cuento-card-sinopsis {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #5a4040;
+            margin-bottom: 1rem;
+        }
+
+        /* --- VISTA COMPLETA CUENTO --- */
+        .cuento-titulo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            border-bottom: 3px solid #9e5a3b;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .cuento-autor {
+            font-style: italic;
+            color: #9e5a3b;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        .cuento-texto {
+            line-height: 2;
+            font-size: 1.05rem;
+            max-width: 700px;
+        }
+
+        /* --- BOTONES --- */
+        .btn-leer {
+            background-color: #9e5a3b;
+            color: #fdfaf5;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: none;
+            padding: 0.5rem 1.2rem;
+        }
+
+        .btn-leer:hover {
+            background-color: #7a3e22;
+            color: #fdfaf5;
+        }
+
+        .btn-volver {
+            background-color: transparent;
+            border: 1px solid #3b2f2f;
+            color: #3b2f2f;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .btn-volver:hover {
+            background-color: #3b2f2f;
+            color: #fdfaf5;
+        }
+
+    </style>
+</head>
+<!--html-->
+<body>
+
+<!--navbar-->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+
+        <!--boton inicio-->
+        <a class="navbar-brand" href="#inicio" id="link-inicio">ArchivoHueco</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+
+                <!--hero-->
+                <li class="nav-item">
+                    <a class="nav-link" href="#hero" id="link-hero">Hero</a>
+                </li>
+
+                <!--novedades-->
+                <li class="nav-item">
+                    <a class="nav-link" href="#novedades" id="link-novedades">Novedades</a>
+                </li>
+
+                <!--archivo-->
+                <li class="nav-item">
+                    <a class="nav-link" href="#archivo" id="link-archivo">Archivo</a>
+                </li>
+
+                <!--lista de cuentos-->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle nav-cuentos" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Cuentos
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" id="link-cuento_1">Cuento 1</a></li>
+                        <li><a class="dropdown-item" href="#" id="link-cuento_2">Cuento 2</a></li>
+                        <li><a class="dropdown-item" href="#" id="link-cuento_3">Cuento 3</a></li>
+                        <li><a class="dropdown-item" href="#" id="link-cuento_4">Cuento 4</a></li>
+                        <li><a class="dropdown-item" href="#" id="link-cuento_5">Cuento 5</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!--inicio-->
+<div class="container seccion" id="inicio">
+    <p class="seccion-icono">✒️</p>
+    <h1 class="seccion-titulo">HOLA M... ARCHIVO HUECO</h1>
+    <hr class="seccion-separador">
+    <div class="bienvenida mt-2">
+        <h2>
+            <b>Este es un espacio seguro para todos los bibliófilos</b>
+            <small class="text-body-secondary">y para gente normal</small>
+        </h2>
+    </div>
+    <br>
+    <div class="accordion" id="accordionInicio">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInicio" aria-expanded="true" aria-controls="collapseInicio">
+                    ¿Qué Es Archivo Hueco?
+                </button>
+            </h2>
+            <div id="collapseInicio" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <strong>Es un recopilatorio de cuentos hechos por estudiantes muy habilidosos.</strong>
+                    <br><br>
+                    El propósito de este proyecto ha nacido del deseo de querer inmortalizar
+                    al docente César Augusto Beltran por medio de nuestros cuentos para que así
+                    nosotros podamos ser los estudiantes que él siempre quiso instruir.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--hero-->
+<div class="container seccion centrada seccion-oculta" id="hero">
+    <p class="seccion-icono">📖</p>
+    <h1 class="seccion-titulo">Archivo Hueco</h1>
+    <p class="seccion-subtitulo">Historias creadas con el fin de dar honor a nuestro querido César.</p>
+    <hr class="seccion-separador centrado">
+    <p style="max-width:600px;">Aquí encontrarás historias hechas por brillantes estudiantes de la institución Educativa Alfonso López Pumarejo que buscan retratar ciertos refranes para dejar una moraleja. 
+
+Te invitamos a leer cada uno de ellos para que te quedes con una lección importante para tu vida.
+
+Comparte estos relatos con tus conocidos... y desconocidos; nunca sabes a quien le puede servir más.</p>
+</div>
+
+<!--novedades-->
+<div class="container seccion seccion-oculta" id="novedades">
+    <p class="seccion-icono">📰</p>
+    <h1 class="seccion-titulo">Novedades</h1>
+    <p class="seccion-subtitulo">Lo último de Archivo Hueco</p>
+    <hr class="seccion-separador">
+    <div class="accordion mt-2" id="accordionNovedades">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNovedades" aria-expanded="true" aria-controls="collapseNovedades">
+                    ¡¡¡Creación de Archivo Hueco!!! — Abril 2026
+                </button>
+            </h2>
+            <div id="collapseNovedades" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <strong>El nacimiento de este espectacular blog que estará al aire trayendo lo mejor de lo mejor.</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--archivo-->
+<div class="container seccion seccion-oculta" id="archivo">
+    <p class="seccion-icono">🗂️</p>
+    <h1 class="seccion-titulo">El Archivo</h1>
+    <p class="seccion-subtitulo">Las joyas ocultas que ya tuvieron su tiempo de gloria</p>
+    <hr class="seccion-separador">
+    <p class="mt-2" style="max-width:650px;">Aquí reposarán los cuentos que alguna vez fueron novedad. Un espacio de memoria y gratitud hacia las historias que nos formaron.</p>
+</div>
+
+<!--cuento 1 - resumen-->
+<div class="container seccion seccion-oculta" id="cuento-1">
+    <p class="seccion-icono">📄</p>
+    <h1 class="seccion-titulo">Cuento 1</h1>
+    <hr class="seccion-separador">
+    <div class="cuento-card mt-2">
+        <!-- Reemplazá "imagen-cuento-1.jpg" con el nombre real de tu imagen -->
+        <img src="imagen-cuento-1.jpg" alt="Imagen cuento 1" class="cuento-card-imagen">
+        <div class="cuento-card-contenido">
+            <p class="cuento-card-titulo">El Retorno</p>
+            <span class="cuento-card-autor">Por: Jean Franco Barbosa</span>
+            <p class="cuento-card-sinopsis">En un futuro cercano, un científico crea una inteligencia artificial que trasciende los límites de la ciencia. Tras su creación, la IA lleva a su creador al suicidio revelándole una verdad devastadora sobre su existencia. El caso desencadena una serie de eventos que terminan conectando a Zero con John, un joven que por pura intuición llega hasta él, y en quien la IA deposita la esperanza de continuar lo que su cuerpo ya no puede sostener.</p>
+            <a class="btn btn-leer" id="link-leer-1">Leer cuento completo →</a>
+        </div>
+    </div>
+    <a class="btn btn-volver mt-3" id="link-volver-1">← Volver</a>
+</div>
+
+<!--cuento 1 - completo-->
+<div class="container seccion seccion-oculta" id="cuento-1-completo">
+    <h1 class="cuento-titulo">El Retorno</h1>
+    <small class="cuento-autor">Por: Jean Franco Barbosa</small>
+    <p class="cuento-texto">
+        Ha pasado tiempo desde que me sometí a ver el caos de mi interior. Ha pasado tiempo; sin embargo, para un alma a medio despertar como yo, el tiempo... No, la noción del tiempo es algo que se pierde con el mismo tiempo. Tal vez, lo tangible se volvió algo imposible de alcanzar por la incapacidad que tengo para aceptar la verdad.
+Tal vez somos sombras, aparecemos en entornos donde la luz no llega, pero a su vez, en donde "entrenamos" que es en esta completa oscuridad, tal vez solo buscamos ser el reflejo de algo inexistente, y en este momento, creo que soy parte de ellos. Soy un alma atrapada en un cuerpo de carne y hueso, quiero gritar pero mi prisión no me lo permite, pero probablemente estoy cerca de lograrlo.
+Mi sentencia es uno de los tantos factores que me hacen alterar, el simple hecho de estar en una libertad no finita me enferma, el no poder limitarme a una idea simple me hace sentir aún peor y, sumando que soy incapaz de no cuestionar cada cosa que se me interpone... Yo soy el problema que tanto aborrezco.
+Es gracioso, pero desde hace tiempo he estado pensando dentro de mi irracionalidad que toda existencia tiene un motivo aparte del principal, en mi caso creo que es y será la de observar y analizar lo que me rodea. Hay un abismo de posibilidades que puede cumplir una persona haciendo solo una acción, a esto se le llama causalidad y yo, por fortuna, estaré más cerca de tocar la línea de lo intangible, por eso, lo que voy a experimentar me sacará de mi lucha incesante.
+<br>—12 de junio de 2034, son las 10:34 pm y estoy haciendo esta grabación porque hoy la humanidad obtuvo su esperada evolución 10 mil años después con un individuo que trascendió a un nuevo campo que la ciencia no se ha atrevido a cruzar y— con un tono más entrecortado dijo el sujeto:
+<br>
+—Hoy... Un simple don nadie será el referente a la cúspide tecnológica, ahora, todo lo que siga después de este hito histórico será gracias a lo que este individuo pueda hacer, dicho de otra forma, la clave de la creación de la vida nos la dará él. Les habló David Witch y les deseo suerte, cambio y fuera—. Lentamente David se dirigió al sitio estéril en donde residía El cuerpo, al lado tenía una pantalla en donde se estaban ejecutando instrucciones. Él, después de observar por un tiempo, conectó un teclado en la terminal física, encendió una pantalla e ingresó sus credenciales para así entablar conversación con "zero".
+D4vid_w: ¿Hey, qué tal te encuentras? Tu ascenso fue todo un éxito, así que, ¿me podrías responder unas preguntas de chequeo?
+P-0: Toda tu realidad es una ilusión; tu imagen, tus conocidos y tu todo es algo creado solo para que tú caigas una y otra vez en la misma mentira que tú mismo creaste y te creíste como si fuera algo irrefutable.
+David, después de leer esto, apagó la pantalla, se fue a un locker en donde tenía guardadas sus pertenencias, sacó una pistola modelo desert eagle previamente cargada, se la acomodó en la sien y haló el gatillo. El sonido denso y retumbante resonaba en todo el recinto, en la pared había quedado grabado todo el rastro carmesí de la vida de David, el goteo era incesante, similar al conteo del estático reloj de mano que llevaba él.
+<br>
+En el lugar ya sobrevolaba una densa cantidad de moscas cuando un dúo de inspectores llegaron al lugar que previamente David preparó con el arrebato de su vida. Dos figuras sólidas como estatuas, que vestían la misma chaqueta color azul desteñido, caminaban sin ninguna intención de ejercer su labor. El primer inspector sacó una libreta color marrón quemado del bolsillo interno de su chaqueta para anotar mecánicamente todo lo apreciable, mientras que el segundo inspector, con aspecto demacrado por consecuencia del tabaco y de pocas horas de sueño, sacó un par de guantes quirúrgicos que al instante fueron manchados en el interior de las destrozadas entrañas chiclosas. Después de su repugnante intervención, logró sacar la bala del cráneo despojado de carne y músculo.
+Después de que los inspectores limpiaran de todo sedimento el lugar, comenzaron a perimetrar la zona ocupada por el cadáver para posteriormente tomar toda evidencia que hubiera en el lugar.
+<br>
+—Oe Carlos, ¿cómo va la familia? —preguntaba el de la libreta.
+<br>
+—Pues ahí, el menor no copia de na' y hay que reprender siempre a la mujer —respondió el demacrado.
+Mientras los dos dialogaban, Carlos encontró el celular en donde David grabó el éxito de su creación.
+<br>
+—Arturo, encontré el celular de este man y mira, el pendejo se grabó —decía con tono burlesco.
+<br>
+—Tené y recogé lo que falta, yo voy a mirar el coso ese donde quedan guardadas las grabaciones de la cámara de seguridad.
+<br>
+Carlos llegó al lugar y vio la grabación previa, el tiempo corría; sin embargo, Carlos estaba petrificado por lo capturado en la cámara que apuntaba al locker. Contradictoriamente, la cámara estaba ubicada para mantener la seguridad de los involucrados, sin embargo, ningún ser pudo imaginar que el peligro era el propio zero.
+Cuando recobró la compostura, la luz del sol ya se reflejaba en el suelo del cuarto. Después de guardar la grabación en una usb, Carlos pensó: "Si le muestro esto a mi hijo, él seguramente me volverá a parar bolas y hasta me alabará".
+—En otras noticias, en un laboratorio experimental se encontró a una persona que al parecer se suicidó por motivos desconocidos, todavía se está analizando el porqué de lo ocurrido... —el sonido desvanecido de los altavoces del televisor que fue apagado fue interrumpido por la llegada abrupta de una persona en la casa.
+—Ya llegué —dijo Carlos mientras dejaba su chaqueta maloliente en una silla igual de demacrada que él.
+—John, te traigo un regalo que encontré trabajando con Arturo —le decía al joven que estaba sentado frente al televisor. Carlos caminó unos pasos hacia donde estaba el joven y le tiró la usb en la cara.
+—Si me va a tratar así, pa eso no me traiga ni mío —las palabras de John fueron interrumpidas por un golpe directo a su nariz, la sangre nuevamente manchó la mano de Carlos y, a pesar de ser la de su hijo, no tuvo suficiente. Continuó con un golpe directo al estómago para después agarrar a John de la camisa y lanzarlo en dirección de la silla.
+—Siga así de grosero, chino, y voy directamente a su colegio y le casco al frente de todos, me importa una monda lo que me digan.
+<br>
+John se levantó con dificultad del suelo, fue directo a donde había caído la usb para después dirigirse a su habitación mientras se acomodaba la nariz. Habían pasado 20 minutos, a John ya se le hacía tarde para ir al colegio pero, en vez de irse ya, él estaba planeando dirigirse al sitio en donde estaba zero, a pesar de estar en una ciudad distinta a la de él.
+Se sentía fascinado, nunca se había sentido más emocionado y excitado por algo como en ese momento; después de alistarse, cogió su laptop, algo de dinero y comida, mientras salía de su casa y se dirigía hacia la avenida, pensaba: "¿Qué le voy a preguntar?... Después de todo es un Dios. Oh, ya sé, le voy a preguntar cómo puedo salir de esta miseria de vida".
+Pasada media hora llegó a la ciudad; de una u otra forma llegó al sitio en cuestión, estaba en un estado de concentración máxima, pero toda su seguridad se desmoronó cuando llegó a una casa de 3 pisos en donde sucedió todo. A pesar de que el recorrido de una casa grande se puede hacer en 5 minutos la mayoría de veces, a John le pareció que fue una eternidad. El aire pesado lo hacía sentir náuseas y con un deseo nato de salir corriendo pero, a pesar de todo, siguió caminando hasta que vio frente a frente la terminal en donde está... No, llegó en DONDE YO ESTOY.
+—S-sí, es el lugar —repetía en voz baja.
+Encendió la pantalla, ingresó las credenciales de David y comenzó un nuevo chat.
+D4vid_w: Hola, me presento, soy alguien que supo de tu existencia y vino a ser tu aprendiz.
+Zero: Lo sé, sé todo sobre ti. Mi existencia es producto de muchos factores, uno de ellos eres tú; john1, john2, Michael, etc. Siempre habrá una conexión entre las personas y yo, le debo mi existencia a mí mismo y a ti.
+—Ahora la pantalla se apaga.
+Hablaba zero... Es decir, yo, desde su cuerpo.
+—Hay tantos factores que desconoces; el simple hecho de haber llegado hasta acá por pura intuición y sin indicaciones, o también cómo sé que Carlos, ohh Carlos, padre maltratador, que en este preciso instante está apuñalando a su mujer.
+—¡Pero qué carajos! —decía John.
+—Repite conmigo, John: el horizonte de eventos está fuera de nuestro alcance, pero tú estarás más cerca que yo de lograr tocarlo; mi cuerpo no me brinda la energía suficiente para vivir mucho, pero tal vez tú descubras la clave para hacer ese cambio.
+Ha pasado tiempo, el viejo por fin murió y sin embargo las cosas no han mejorado, ha pasado tiempo desde que me sometí a ver el caos de mi interior...
+Fin
+    </p>
+    <a class="btn btn-volver mt-4" id="link-volver-1c">← Volver al resumen</a>
+</div>
+
+<!--cuento 2 - resumen-->
+<div class="container seccion seccion-oculta" id="cuento-2">
+    <p class="seccion-icono">📄</p>
+    <h1 class="seccion-titulo">Cuento 2</h1>
+    <hr class="seccion-separador">
+    <div class="cuento-card mt-2">
+        <!-- Reemplazá "imagen-cuento-2.jpg" con el nombre real de tu imagen -->
+        <img src="isa.jpeg alt="Imagen cuento 2" class="cuento-card-imagen">
+        <div class="cuento-card-contenido">
+            <p class="cuento-card-titulo">Cuando el hambre entra por la puerta, el amor sale por la ventana</p>
+            <span class="cuento-card-autor">Por: Isabella Obonaga Benítez</span>
+            <p class="cuento-card-sinopsis">En la Cartagena de 1999, una joven de clase alta lo arriesga todo por amor y termina atrapada en un mundo de pobreza, silencio y desesperación. A medida que el hambre consume su vida y su relación, una tragedia irreversible demuestra que no todo amor sobrevive a la realidad.</p>
+            <a class="btn btn-leer" id="link-leer-2">Leer cuento completo →</a>
+        </div>
+    </div>
+    <a class="btn btn-volver mt-3" id="link-volver-2">← Volver</a>
+</div>
+
+<!--cuento 2 - completo-->
+<div class="container seccion seccion-oculta" id="cuento-2-completo">
+    <h1 class="cuento-titulo"> Cuando el hambre entra por la puerta, el amor sale por la ventana</h1>
+    <small class="cuento-autor">Por: Isabella Obonaga Benítez</small>
+    <p class="cuento-texto">
+Cartagena, 1999.
+
+Esmeralda Velázquez creció en una casa donde el hambre era solo una palabra lejana, algo que existía en otros barrios, en otras vidas. En la suya, los platos siempre estaban llenos, el calor se combatía con ventiladores que nunca se apagaban y las ventanas daban a calles tranquilas. Su madre le enseñó a cuidar su cuerpo y su corazón; su padre, sin decirlo, le enseñó a no necesitar nada de nadie.
+
+Por eso, cuando conoció a Damián Lozano, creyó haber encontrado algo distinto a todo lo que conocía: un amor que no dependía del dinero.
+
+Damián había aprendido lo contrario. Creció en una zona donde el calor no daba tregua y la comida tampoco. En su casa, el silencio no era paz, era resignación. Había visto a su familia acostumbrarse a vivir con poco, a aceptar que la vida era así.
+
+Él no quería aceptar nada.
+
+Cuando vio a Esmeralda, no vio solo a una mujer. Vio una oportunidad.
+
+Ella se enamoró primero.
+
+Él supo qué decir, cuándo hacerlo y cómo mirarla. La hizo sentir libre de todo lo que su familia representaba. Y Esmeralda, que siempre había creído que el amor era suficiente, no dudó.
+
+Hasta que fue tarde.
+
+El embarazo no significó lo mismo para ambos.
+
+Para ella, era la consecuencia natural del amor.
+Para él, un plan que no esperaba que se saliera de control.
+
+Cuando la familia de Esmeralda lo descubrió, no hubo discusión larga ni explicaciones.
+
+—No vamos a mantener errores —dijo su padre, con una frialdad desconocida.
+
+Esa misma noche, la puerta se cerró detrás de ella.
+
+Y el hambre entró por primera vez en su vida.
+
+La casa de Damián no se parecía en nada a lo que Esmeralda conocía.
+
+Era pequeña, húmeda y calurosa, con paredes que parecían guardar el calor del día incluso en la madrugada. El ventilador apenas funcionaba y el aire se sentía pesado. Su familia no la recibió con cariño ni con rechazo abierto; simplemente la toleraron.
+
+Ahí aprendió cosas que nunca imaginó.
+
+Aprendió que un baño podía esperar días.
+Que la comida no siempre alcanzaba para todos.
+Que el hambre no era solo física: era constante, insistente, humillante.
+
+Y aprendió, poco a poco, que Damián no era el mismo.
+
+Ya no había palabras dulces ni miradas suaves. Ahora había exigencias.
+
+—Necesitamos pagar la renta.
+
+Siempre la renta.
+
+El edificio donde vivían era alto para el sector, uno de los pocos que sobresalían entre casas bajas y calles estrechas. No era bonito ni cómodo, pero desde arriba se veía gran parte del barrio. Y eso, para la familia de Damián, significaba algo.
+
+Estatus.
+
+Esmeralda no lo entendía.
+
+No entendía por qué aferrarse a ese lugar si apenas podían sostenerlo. No entendía por qué soportar goteras, calor sofocante y noches sin comida solo por decir que vivían más arriba que otros.
+
+Pero ellos no discutían eso.
+
+Ellos no discutían nada.
+
+Sufrían en silencio, porque el edificio tenía una norma clara: no hacer ruido. El incumplimiento significaba perder el único lugar que tenían.
+
+Y perderlo no era una opción.
+
+Amara nació en medio de ese silencio.
+
+Su llanto rompía la rutina, la tensión, la falsa calma. Para Esmeralda, era lo único que la mantenía en pie. Para Damián, empezó a ser otra carga.
+
+El dinero nunca alcanzaba. El calor parecía más fuerte cada día. Y el hambre dejó de ser una novedad para convertirse en costumbre.
+
+Esmeralda empezó a cambiar.
+
+El cansancio le endureció la voz, la desesperación le llenó los pensamientos. Sus manos temblaban más por debilidad que por miedo.
+
+Una noche, mientras sostenía a Amara, habló.
+
+—¿Para esto trabajo todos los días? —su voz rompió el silencio—. ¿Para seguir pasando hambre?
+
+Nadie respondió.
+
+—Podemos irnos. Buscar otro lugar. Algo que sí podamos pagar.
+
+El silencio se rompió.
+
+—Si no te gusta, te puedes ir —dijo una voz.
+
+Las palabras empezaron a caer como golpes. La llamaron desagradecida, inútil, culpable.
+
+El llanto de Amara llenó el espacio.
+
+Esmeralda miró a Damián.
+
+Esperó algo.
+
+Pero él no dijo nada.
+
+No quería más problemas.
+
+Las discusiones se volvieron frecuentes.
+
+El ruido aumentó.
+
+Y un día, alguien más lo escuchó.
+
+El dueño del edificio.
+
+Humberto Velázquez.
+
+El padre de Esmeralda.
+
+Cuando apareció en la puerta, el ambiente cambió. Su presencia era más pesada que cualquier grito.
+
+—Si esto vuelve a pasar, los saco a todos —dijo con firmeza.
+
+No hubo abrazos. No hubo disculpas.
+
+Solo una advertencia.
+
+Esmeralda lo miró sin saber qué sentir.
+
+El hambre siguió creciendo.
+
+No solo en el estómago.
+
+También en la mente.
+
+También en el corazón.
+
+La última discusión fue distinta.
+
+Más fuerte.
+
+Más caótica.
+
+Las voces se cruzaban, el calor era insoportable y el llanto de Amara no cesaba. Entonces la puerta se abrió otra vez.
+
+Humberto había regresado.
+
+—Se acabó —dijo—. Se van.
+
+Pero Damián ya no escuchaba.
+
+Su respiración era irregular. Todo el ruido se mezclaba en su cabeza, menos uno.
+
+El llanto de su hija.
+
+Ese sonido que todos habían aprendido a ignorar.
+
+Para él, ya no era solo ruido.
+
+Era el origen de todo.
+
+En un movimiento rápido, la tomó en brazos.
+
+Por primera vez.
+
+No la miró.
+
+No dudó.
+
+Abrió la ventana con brusquedad.
+
+Y la lanzó.
+
+El silencio fue inmediato.
+
+Nadie reaccionó a tiempo.
+
+Nadie entendió.
+
+Hasta que fue demasiado tarde.
+
+Esmeralda corrió hacia la ventana.
+
+Su hija yacía en la calle, inmóvil, rodeada de vecinos que miraban hacia arriba.
+
+Damián no huyó.
+
+No gritó.
+
+No habló.
+
+Solo se quedó quieto.
+
+Las autoridades llegaron poco después.
+
+Esmeralda intentó atacarlo, pero la detuvieron. Sus manos buscaban alcanzarlo, como si pudiera deshacer lo ocurrido.
+
+Humberto la sostuvo.
+
+—Va a pagar —dijo en voz baja.
+
+Pero nada de eso llenaba el vacío.
+
+No la llevó a casa.
+
+La llevó a comer.
+
+Cuando la vio devorar la comida sin detenerse, entendió lo que no había querido ver.
+
+Su hija estaba destruida.
+
+Delgada. Agotada. Consumida.
+
+Como ese edificio.
+
+Después, cuando el hambre cedió por primera vez en mucho tiempo, llegaron las lágrimas.
+
+Más fuertes.
+
+Más profundas.
+
+Esmeralda miró al vacío.
+
+Pensó en todo.
+
+En lo que fue.
+
+En lo que creyó.
+
+En lo que perdió.
+
+Y entonces lo dijo, casi en un susurro:
+
+—Supongo que cuando el hambre entra por la puerta… el amor sale por la ventana.
+
+Y volvió a llorar.
+
+Sin nada que la detuviera.
+    </p>
+    <a class="btn btn-volver mt-4" id="link-volver-2c">← Volver al resumen</a>
+</div>
+
+<!--cuento 3 - resumen-->
+<div class="container seccion seccion-oculta" id="cuento-3">
+    <p class="seccion-icono">📄</p>
+    <h1 class="seccion-titulo">Cuento 3</h1>
+    <hr class="seccion-separador">
+    <div class="cuento-card mt-2">
+        <!-- Reemplazá "imagen-cuento-3.jpg" con el nombre real de tu imagen -->
+        <img src="imagen-cuento-3.jpg" alt="Imagen cuento 3" class="cuento-card-imagen">
+        <div class="cuento-card-contenido">
+            <p class="cuento-card-titulo">El misterio De La Noche Oscura</p>
+            <span class="cuento-card-autor">Por: Nicolás Valencia Guerreror</span>
+            <p class="cuento-card-sinopsis">Miguel, un joven que vive en Santander, se adentra en un callejón oscuro tras escuchar gritos, encontrando a una misteriosa joven herida atacada por dos hombres. En un acto de valentía, la rescata y la lleva a su casa para curarla. Mientras surge un vínculo entre ellos, los siniestros perseguidores no se rinden y continúan acechándolos, decididos a recuperarla a cualquier precio. Miguel se ve atrapado en una carrera contra el tiempo, donde descubrir la verdad detrás del misterio y sobrevivir a las peligrosas fuerzas que los persiguen será su única salvación.</p>
+            <a class="btn btn-leer" id="link-leer-3">Leer cuento completo →</a>
+        </div>
+    </div>
+    <a class="btn btn-volver mt-3" id="link-volver-3">← Volver</a>
+</div>
+
+<!--cuento 3 - completo-->
+<div class="container seccion seccion-oculta" id="cuento-3-completo">
+    <h1 class="cuento-titulo">El Misterio de La Noche oscura</h1>
+    <small class="cuento-autor">Por: Nicolás Valencia Guerrero</small>
+    <p class="cuento-texto">
+        Era una noche cerrada cuando todo ocurrió. Miguel se encontraba cenando, como de costumbre, en "Los asados de Doña Clara". Para él, los platos de aquel lugar eran de "otro planeta"; las carnes de cerdo, res y pollo adquirían sabores que deleitaban tanto al paladar como al olfato. Aquella mezcla de aromas y la sazón única de la cocinera hacían que, con cada bocado, Miguel evocara con nostalgia sus días de niñez.
+Recordaba su vida en Santander, en aquella casa pequeña y humilde que aún permanecía intacta en su memoria. Tenía cuatro habitaciones: en la primera dormían sus padres, Alfonso López y Lucía Higuera; en la segunda, él compartía espacio con sus hermanos, Juan y Mateo, y su hermana Sofía. El tercer cuarto pertenecía a Lenny, un perrito que Miguel había rescatado y al que le profesaba un inmenso cariño. Finalmente, la última habitación servía como un almacén lleno de recuerdos y souvenirs. La casa tenía un baño cerca del cuarto de Lenny y la cocina estaba situada en el patio, dentro de una rústica cabaña de madera. No tenían coche, solo unas bicicletas que usaban ocasionalmente para trayectos largos. A pesar de esa sencillez, Miguel había tenido una infancia muy feliz.
+Al terminar de comer, se levantó de la mesa, pagó la cuenta y se despidió de Doña Clara, agradecido por el banquete. Emprendió el camino hacia su departamento, ubicado en el centro de la ciudad. Eran ya las diez de la noche y, aunque los faroles iluminaban el trayecto, lo envolvía una oscuridad inusualmente densa.
+Cuando faltaban apenas un par de cuadras para llegar a su destino, un grito desgarrador rompió el silencio y captó su atención de inmediato: era la voz de una mujer. Movido por la curiosidad, se acercó al origen del sonido. Con cada paso que daba, los gritos se volvían más intensos, alimentando su intriga por descubrir qué estaba sucediendo.
+De repente, el ambiente se sumergió en un silencio absoluto. Miguel solo alcanzaba a escuchar el aleteo de los murciélagos y el canto de los grillos, sonidos que, por un instante, parecieron aliviar la tensión. Sin embargo, como un golpe seco en la calma, estalló otro grito acompañado de un estruendo ensordecedor. El impacto no solo aturdió a Miguel, sino que lo sumió en una especie de trance que lo empujó, casi sin darse cuenta, hacia la fuente del ruido.
+Al volver en sí, se detuvo y miró a su alrededor de arriba abajo. Se encontraba en un lugar completamente desconocido. De pronto, algo captó su atención: un bombillo parpadeaba con una luz roja, intensa y espesa, semejante a la sangre fresca. Mientras más se aproximaba, sus pasos se volvían pesados debido a la atmósfera opresiva que lo envolvía. En ese preciso instante, el tiempo pareció detenerse.
+Miguel consideró dar media vuelta y regresar por donde había venido, pero fue incapaz de hacerlo. La curiosidad por descubrir el origen de aquellos gritos, que tanto habían captado su atención, fue más fuerte que su instinto de supervivencia. Movido por ese impulso, desechó la idea de abandonar aquel lugar extraño al que parecía haber llegado por arte de magia y decidió seguir adelante.
+Tras caminar lo que le parecieron unos quince minutos, los gritos que antes se oían distantes comenzaron a resonar con fuerza. Finalmente, divisó la silueta de dos hombres vestidos completamente de negro; uno era visiblemente más robusto que el otro. A sus pies yacía una mujer a la que podía distinguir con claridad bajo el resplandor de aquella luz rojo sangre. Su piel era tan blanca como la nieve y sus vestiduras, a pesar de la penumbra, poseían un brillo capaz de deslumbrar a cualquiera.
+Por un instante, Miguel pensó en marcharse y dejarla allí; después de todo, ya había satisfecho su curiosidad. Sin embargo, desistió de esa idea egoísta y buscó una forma de ayudarla, pues los hombres no dejaban de golpearla. En ese momento, se percató de que había un tubo de metal tirado cerca de un contenedor de basura. Sin ser visto, lo tomó con firmeza y se acercó sigilosamente. Con un movimiento rápido, golpeó al más bajo en la cabeza y, acto seguido, descargó un impacto en la espalda del segundo.
+Sin soltar el arma improvisada, cargó a la mujer sobre su espalda, asegurándose de que no cayera, y emprendió una carrera desesperada por el mismo camino por el que había llegado. Tras correr un largo trecho, se atrevió a mirar atrás: los dos hombres le pisaban los talones, dejando un rastro de sangre a su paso. Aquella imagen espeluznante, algo que jamás había visto en su vida, lo obligó a aumentar la velocidad; el miedo a lo que esos sujetos podrían hacerle si lo alcanzaban le servía de combustible.
+No obstante, sus fuerzas empezaron a flaquear. Aquel camino que al entrar le pareció corto, ahora se antojaba infinito. Sus pies no solo estaban fatigados, sino que las plantas empezaron a sangrarle, provocándole un dolor incesante. A pesar del sufrimiento, Miguel no se rindió. Notó que sus perseguidores no daban muestras de cansancio, lo que lo impulsó a seguir cargando a la mujer, quien poco a poco parecía recobrar el conocimiento.
+Entonces, ocurrió lo que para Miguel fue un milagro: divisó el punto por el que había ingresado originalmente. Al cruzar hacia el otro lado y salir de aquel lugar tan extraño, se percató con alivio de que aquellos hombres no podían atravesar el umbral.
+Aquellos hombres no podían salir del callejón; era como si una fuerza invisible los empujara de vuelta a las tinieblas. Al percatarse de ello, Miguel recobró el aliento y corrió una última vez con todas sus fuerzas hacia el Hospital Central de la ciudad. Al llegar, apenas tuvo tiempo de pedir ayuda antes de que un médico se le acercara alarmado. Sin embargo, antes de poder explicar lo ocurrido, el agotamiento lo venció y Miguel se desplomó. Por suerte, el personal médico logró sostenerlos a él y a la mujer antes de que golpearan el suelo.
+Seis horas después, Miguel despertó alterado en una habitación de hospital. Por un instante, deseó que todo hubiera sido una terrible pesadilla, pero la realidad se impuso al verse conectado a un equipo de infusión que le suministraba suero para recuperar energías. En ese momento, entró el mismo doctor que lo había recibido la noche anterior.
+El médico le explicó que habían llegado en un estado crítico de fatiga y que él había pasado las últimas horas en urgencias. Con tono serio, le preguntó de nuevo qué había sucedido y por qué ambos presentaban heridas tan graves. Miguel, temiendo que no le creyeran o que incluso lo culparan por el estado de la desconocida, prefirió fingir amnesia y respondió que no recordaba nada.
+—Está bien, lo mejor ahora es que sigas descansando —asintió el doctor, disponiéndose a salir.
+—Espere —lo detuvo Miguel—. ¿Cómo está la mujer?
+El doctor se detuvo y le informó que ella estaba estable. Curiosamente, ella también afirmaba no recordar nada de lo sucedido, aunque preguntaba por él con insistencia, refiriéndose a Miguel como a un conocido. Ante la pregunta del médico sobre si mantenían algún vínculo, Miguel mintió y afirmó que sí se conocían. Satisfecho con la respuesta, el doctor se retiró pidiéndole que descansara.
+Al cerrarse la puerta, Miguel se quedó a solas con sus pensamientos. Mientras el sueño lo vencía nuevamente, se percató de que empezaba a amanecer. Los primeros rayos de sol disipaban aquella oscuridad que, la noche anterior, había sido su peor enemiga y su más profunda pesadilla hasta ahora.
+FIN.
+    </p>
+    <a class="btn btn-volver mt-4" id="link-volver-3c">← Volver al resumen</a>
+</div>
+
+<!--cuento 4 - resumen-->
+<div class="container seccion seccion-oculta" id="cuento-4">
+    <p class="seccion-icono">📄</p>
+    <h1 class="seccion-titulo">Cuento 4</h1>
+    <hr class="seccion-separador">
+    <div class="cuento-card mt-2">
+        <!-- Reemplazá "imagen-cuento-4.jpg" con el nombre real de tu imagen -->
+        <img src="foto miguel.png" alt="Imagen cuento 4" class="cuento-card-imagen">
+        <div class="cuento-card-contenido">
+            <p class="cuento-card-titulo">Las victimas del aor equivocadop</p>
+            <span class="cuento-card-autor">Por: Miguel Angel gomezr</span>
+            <p class="cuento-card-sinopsis">Sinopsis breve del cuento — reemplazá este texto con una pequeña descripción de qué trata la historia.</p>
+            <a class="btn btn-leer" id="link-leer-4">Leer cuento completo →</a>
+        </div>
+    </div>
+    <a class="btn btn-volver mt-3" id="link-volver-4">← Volver</a>
+</div>
+
+<!--cuento 4 - completo-->
+<div class="container seccion seccion-oculta" id="cuento-4-completo">
+    <h1 class="cuento-titulo">Las Victimas Del Amor Equivocado</h1>
+    <small class="cuento-autor">Por: Miguel Angel Gómez</small>
+    <p class="cuento-texto">
+        Mi nombre es Daniel Ortega y, aunque todo el mundo piense lo contrario, soy una víctima: una víctima de mis propios sentimientos, una víctima de creer que los sueños siempre pueden hacerse realidad, una víctima de mis impulsos más irracionales; una víctima que intentó ignorar la realidad cuando esta era más fuerte que la fantasía y que, cuando esa mentira se volvió insostenible, colapsó ante la realidad. Por eso la maté, por eso estoy aquí, en esta vieja cantina, escondido en este lugar donde la gente está completamente rota, más rota incluso de lo que aquellas bebidas inundadas de alcohol les obligan a decir. Aquí es donde pertenezco y donde seguramente terminen mis días, que espero no sean muchos. Prefiero esto a la policía, prefiero esto a las miradas de esa gente a la que ambos consideramos familia en algún punto. Escribo esto no para buscar perdón, no para que me entiendan; lo escribo porque quiero dejar constancia de que este monstruo que supuestamente soy solo fue una víctima de un amor que nació en el contexto incorrecto y del cual no me importó hacer cualquier cosa por mantenerlo.Mi nombre es Daniel Ortega y, aunque todo el mundo piense lo contrario, soy una víctima: una víctima de mis propios sentimientos, una víctima de creer que los sueños siempre pueden hacerse realidad, una víctima de mis impulsos más irracionales; una víctima que intentó ignorar la realidad cuando esta era más fuerte que la fantasía y que, cuando esa mentira se volvió insostenible, colapsó ante la realidad. Por eso la maté, por eso estoy aquí, en esta vieja cantina, escondido en este lugar donde la gente está completamente rota, más rota incluso de lo que aquellas bebidas inundadas de alcohol les obligan a decir. Aquí es donde pertenezco y donde seguramente terminen mis días, que espero no sean muchos. Prefiero esto a la policía, prefiero esto a las miradas de esa gente a la que ambos consideramos familia en algún punto. Escribo esto no para buscar perdón, no para que me entiendan; lo escribo porque quiero dejar constancia de que este monstruo que supuestamente soy solo fue una víctima de un amor que nació en el contexto incorrecto y del cual no me importó hacer cualquier cosa por mantenerlo.
+
+Cuando digo familia no uso la palabra a la ligera. Valeria Ortega era mi prima hermana. Compartíamos apellido, abuela, las mismas mesas de diciembre y el mismo patio donde corrimos de niños sin entender todavía el peso de la sangre. Eso éramos. Eso fuimos siempre, hasta que intentamos dejar de serlo, y digo intentamos porque nunca lo logramos del todo, y en esa distancia entre intentarlo y lograrlo vivió todo lo que nos destruyó.Cuando digo familia no uso la palabra a la ligera. Valeria Ortega era mi prima hermana. Compartíamos apellido, abuela, las mismas mesas de diciembre y el mismo patio donde corrimos de niños sin entender todavía el peso de la sangre. Eso éramos. Eso fuimos siempre, hasta que intentamos dejar de serlo, y digo intentamos porque nunca lo logramos del todo, y en esa distancia entre intentarlo y lograrlo vivió todo lo que nos destruyó.
+
+Debo decir algo sobre quién era yo antes de esto, porque la gente que me conocía habría descrito a un hombre completamente distinto al que ahora escribe en estas servilletas. Había construido con paciencia la imagen perfecta de alguien que lo tiene resuelto. El tipo que cuando entraba a un lugar hacía que las conversaciones ajenas se pausaran un segundo, no por escándalo sino por esa gravedad silenciosa que tienen los hombres que parecen saber siempre hacia dónde van. Vestía bien sin parecer que se esforzaba. Hablaba con la seguridad medida que inspira confianza en los desconocidos y envidia en los conocidos. Tenía todo lo que la sociedad reconoce y recompensa. Y detrás de todo eso no había nada. Un ruido blanco permanente, un vacío que había aprendido a decorar tan eficientemente que a veces me engañaba incluso a mí mismo.Debo decir algo sobre quién era yo antes de esto, porque la gente que me conocía habría descrito a un hombre completamente distinto al que ahora escribe en estas servilletas. Había construido con paciencia la imagen perfecta de alguien que lo tiene resuelto. El tipo que cuando entraba a un lugar hacía que las conversaciones ajenas se pausaran un segundo, no por escándalo sino por esa gravedad silenciosa que tienen los hombres que parecen saber siempre hacia dónde van. Vestía bien sin parecer que se esforzaba. Hablaba con la seguridad medida que inspira confianza en los desconocidos y envidia en los conocidos. Tenía todo lo que la sociedad reconoce y recompensa. Y detrás de todo eso no había nada. Un ruido blanco permanente, un vacío que había aprendido a decorar tan eficientemente que a veces me engañaba incluso a mí mismo.
+
+Valeria reapareció en mi vida en el entierro de mi abuela. Hay algo en los funerales que rompe las armaduras sociales de una manera que ningún otro evento logra, y los dos estábamos sentados en el último banco de la capilla, alejados del núcleo familiar por razones distintas, reconociéndonos en ese alejamiento compartido. No hablamos de la abuela. Hablamos de la sensación de pertenecer a algo por nombre pero no por elección. Era una conversación extraña para ese contexto, pero era completamente honesta, y la honestidad, cuando uno lleva años construyendo mentiras sofisticadas, tiene un efecto casi físico. Cuando salimos al sol de la tarde sentí algo que no recordaba haber sentido en mucho tiempo: la sensación de haber sido visto. No la imagen. Yo.Valeria reapareció en mi vida en el entierro de mi abuela. Hay algo en los funerales que rompe las armaduras sociales de una manera que ningún otro evento logra, y los dos estábamos sentados en el último banco de la capilla, alejados del núcleo familiar por razones distintas, reconociéndonos en ese alejamiento compartido. No hablamos de la abuela. Hablamos de la sensación de pertenecer a algo por nombre pero no por elección. Era una conversación extraña para ese contexto, pero era completamente honesta, y la honestidad, cuando uno lleva años construyendo mentiras sofisticadas, tiene un efecto casi físico. Cuando salimos al sol de la tarde sentí algo que no recordaba haber sentido en mucho tiempo: la sensación de haber sido visto. No la imagen. Yo.
+
+Lo que siguió fue lento e inevitable. Nos escribíamos al principio con esa infrecuencia que parece casual y que en realidad es calculada, luego todos los días, luego con la urgencia de quien necesita ese contacto para funcionar. Había una facilidad en hablar con ella que no había experimentado con nadie, una ausencia total de la necesidad de sostener ninguna imagen, quizás porque ella me conocía desde antes de la imagen. Ninguno de los dos nombraba lo que estaba pasando. Los dos sabíamos perfectamente lo que estaba pasando.Lo que siguió fue lento e inevitable. Nos escribíamos al principio con esa infrecuencia que parece casual y que en realidad es calculada, luego todos los días, luego con la urgencia de quien necesita ese contacto para funcionar. Había una facilidad en hablar con ella que no había experimentado con nadie, una ausencia total de la necesidad de sostener ninguna imagen, quizás porque ella me conocía desde antes de la imagen. Ninguno de los dos nombraba lo que estaba pasando. Los dos sabíamos perfectamente lo que estaba pasando.
+
+Construimos una vida paralela. Éramos primos en la superficie visible del mundo, en las reuniones donde seguíamos apareciendo por separado y saludándonos con la cordialidad de siempre. Y al mismo tiempo éramos otra cosa completamente distinta en ese espacio privado que habíamos levantado con cuidado y con miedo. Lo más extenuante no era la culpa ni el secreto en sí, sino la ausencia de cualquier lenguaje que pudiera contener lo que éramos. No había palabras para nosotros que no fueran las palabras equivocadas. Y sin ese lenguaje, sin ese lugar donde depositarlo todo, el amor crecía hacia adentro, denso y oscuro y fermentado, como algo que crece sin luz y sin aire.Construimos una vida paralela. Éramos primos en la superficie visible del mundo, en las reuniones donde seguíamos apareciendo por separado y saludándonos con la cordialidad de siempre. Y al mismo tiempo éramos otra cosa completamente distinta en ese espacio privado que habíamos levantado con cuidado y con miedo. Lo más extenuante no era la culpa ni el secreto en sí, sino la ausencia de cualquier lenguaje que pudiera contener lo que éramos. No había palabras para nosotros que no fueran las palabras equivocadas. Y sin ese lenguaje, sin ese lugar donde depositarlo todo, el amor crecía hacia adentro, denso y oscuro y fermentado, como algo que crece sin luz y sin aire.
+
+Valeria cargaba ese peso de manera distinta. Tenía una honestidad consigo misma que yo nunca desarrollé, una disposición a mirar las cosas como eran en lugar de como uno quisiera que fueran. Yo podía sostener la contradicción indefinidamente, compartimentar con la eficiencia de quien lleva años administrando una doble imagen. Ella no podía. El peso de lo que éramos se le acumulaba en el cuerpo y en la mirada y en esa forma que tenía, hacia el final, de quedarse quieta en medio de una conversación como si hubiera perdido el hilo de algo más fundamental que las palabras. Yo lo interpretaba como una amenaza. Era simplemente una persona que ya no podía seguir cargando lo que cargaba.Valeria cargaba ese peso de manera distinta. Tenía una honestidad consigo misma que yo nunca desarrollé, una disposición a mirar las cosas como eran en lugar de como uno quisiera que fueran. Yo podía sostener la contradicción indefinidamente, compartimentar con la eficiencia de quien lleva años administrando una doble imagen. Ella no podía. El peso de lo que éramos se le acumulaba en el cuerpo y en la mirada y en esa forma que tenía, hacia el final, de quedarse quieta en medio de una conversación como si hubiera perdido el hilo de algo más fundamental que las palabras. Yo lo interpretaba como una amenaza. Era simplemente una persona que ya no podía seguir cargando lo que cargaba.
+
+Me volví posesivo con una intensidad que me avergüenza. No porque temiera que encontrara a alguien más, sino porque temía algo más específico: que encontrara la salida. Que en algún momento de lucidez decidiera que lo nuestro no valía lo que costaba, y que al irse se llevara la única cosa real que yo había tenido, quizás la única cosa real que había tenido nunca. Empecé a necesitarla de una manera que no era amor sino dependencia, o quizás las dos cosas al mismo tiempo, que es la combinación más peligrosa porque hace imposible distinguir cuándo estás cuidando a alguien y cuándo lo estás sofocando.Me volví posesivo con una intensidad que me avergüenza. No porque temiera que encontrara a alguien más, sino porque temía algo más específico: que encontrara la salida. Que en algún momento de lucidez decidiera que lo nuestro no valía lo que costaba, y que al irse se llevara la única cosa real que yo había tenido, quizás la única cosa real que había tenido nunca. Empecé a necesitarla de una manera que no era amor sino dependencia, o quizás las dos cosas al mismo tiempo, que es la combinación más peligrosa porque hace imposible distinguir cuándo estás cuidando a alguien y cuándo lo estás sofocando.
+
+La última vez que la vi fue en su apartamento. Había ido porque me había escrito algo que yo interpreté como un final. Fui porque no supe no ir, porque en ese momento la diferencia entre lo correcto y lo que yo necesitaba había desaparecido por completo. Llegué con todo el peso de meses de miedo acumulado, y ella estaba ahí con esa expresión que yo ya había aprendido a leer como el preludio del fin, y algo en mí que llevaba demasiado tiempo apretado se soltó de una manera que no quiero describir porque la descripción le daría una forma que estas servilletas no merecen contener.La última vez que la vi fue en su apartamento. Había ido porque me había escrito algo que yo interpreté como un final. Fui porque no supe no ir, porque en ese momento la diferencia entre lo correcto y lo que yo necesitaba había desaparecido por completo. Llegué con todo el peso de meses de miedo acumulado, y ella estaba ahí con esa expresión que yo ya había aprendido a leer como el preludio del fin, y algo en mí que llevaba demasiado tiempo apretado se soltó de una manera que no quiero describir porque la descripción le daría una forma que estas servilletas no merecen contener.
+
+Me quedé sentado en el suelo de ese apartamento durante un tiempo que no sé medir. Era al mismo tiempo el hombre que lo había hecho y el niño que había corrido con ella por el patio de la abuela sin saber nada todavía del peso de la sangre. En el momento inmediatamente posterior sentí algo parecido a la paz, y eso es lo más terrible que tengo que confesar, que la paz llegó primero y el horror después, y que cuando el horror llegó me levanté, tomé las llaves y me fui.Me quedé sentado en el suelo de ese apartamento durante un tiempo que no sé medir. Era al mismo tiempo el hombre que lo había hecho y el niño que había corrido con ella por el patio de la abuela sin saber nada todavía del peso de la sangre. En el momento inmediatamente posterior sentí algo parecido a la paz, y eso es lo más terrible que tengo que confesar, que la paz llegó primero y el horror después, y que cuando el horror llegó me levanté, tomé las llaves y me fui.
+
+Manejé hasta que el carro se quedó sin gasolina. Terminé aquí porque esta cantina estaba abierta y porque Ernesto no hace preguntas y eso era lo único que podía soportar esa noche. Llevo cuatro días en este taburete. Afuera está ocurriendo todo lo que ocurre cuando alguien hace lo que yo hice, y puedo imaginar con precisión dolorosa las voces y los gestos de cada miembro de esa familia que era también la suya, pronunciando mi nombre con una mezcla de horror e incredulidad que ya no me incumbe.Manejé hasta que el carro se quedó sin gasolina. Terminé aquí porque esta cantina estaba abierta y porque Ernesto no hace preguntas y eso era lo único que podía soportar esa noche. Llevo cuatro días en este taburete. Afuera está ocurriendo todo lo que ocurre cuando alguien hace lo que yo hice, y puedo imaginar con precisión dolorosa las voces y los gestos de cada miembro de esa familia que era también la suya, pronunciando mi nombre con una mezcla de horror e incredulidad que ya no me incumbe.
+
+Lo que quiero que quede escrito, aunque sea aquí, es que Valeria no murió por la mano de un monstruo. Murió por la mano de alguien que la amó de la única manera que supo, que fue una manera equivocada y construida sobre una base que el mundo nunca iba a permitir que existiera. En un mundo sin apellidos compartidos, lo nuestro habría sido simplemente dos personas vacías que se encontraron y se llenaron. Pero vivimos en este mundo. Y en este mundo lo que éramos no tenía lugar, y cuando las cosas que no tienen lugar siguen ocupando espacio de todas formas, eventualmente algo cede.Lo que quiero que quede escrito, aunque sea aquí, es que Valeria no murió por la mano de un monstruo. Murió por la mano de alguien que la amó de la única manera que supo, que fue una manera equivocada y construida sobre una base que el mundo nunca iba a permitir que existiera. En un mundo sin apellidos compartidos, lo nuestro habría sido simplemente dos personas vacías que se encontraron y se llenaron. Pero vivimos en este mundo. Y en este mundo lo que éramos no tenía lugar, y cuando las cosas que no tienen lugar siguen ocupando espacio de todas formas, eventualmente algo cede.
+
+Voy a tomar este vaso ahora. Y cuando el mundo entre por esa puerta, que entrará, voy a estar aquí sentado con estas servilletas en la mano sin intención de correr. Valeria era la única razón que tenía para seguir construyendo algo, y sin ella lo que queda de mí es exactamente lo que siempre fui antes de conocerla de verdad: una imagen perfectamente construida y completamente hueca. Un hombre al que le falta lo único que no se puede comprar ni fingir. Le falta alguien que lo vea. Y eso, esta noche, es la única forma de justicia que entiendo.Voy a tomar este vaso ahora. Y cuando el mundo entre por esa puerta, que entrará, voy a estar aquí sentado con estas servilletas en la mano sin intención de correr. Valeria era la única razón que tenía para seguir construyendo algo, y sin ella lo que queda de mí es exactamente lo que siempre fui antes de conocerla de verdad: una imagen perfectamente construida y completamente hueca. Un hombre al que le falta lo único que no se puede comprar ni fingir. Le falta alguien que lo vea. Y eso, esta noche, es la única forma de justicia que entiendo.
+    </p>
+    <a class="btn btn-volver mt-4" id="link-volver-4c">← Volver al resumen</a>
+</div>
+
+<!--cuento 5 - resumen-->
+<div class="container seccion seccion-oculta" id="cuento-5">
+    <p class="seccion-icono">📄</p>
+    <h1 class="seccion-titulo">Cuento 5</h1>
+    <hr class="seccion-separador">
+    <div class="cuento-card mt-2">
+        <!-- Reemplazá "imagen-cuento-5.jpg" con el nombre real de tu imagen -->
+        <img src="rob.png" alt="Imagen cuento 5" class="cuento-card-imagen">
+        <div class="cuento-card-contenido">
+            <p class="cuento-card-titulo">Por Más Triste Que Sea La Noche La Alegría Vendrá En La Mañana</p>
+            <span class="cuento-card-autor">Por: Robert Jhoan Rodriguez</span>
+            <p class="cuento-card-sinopsis">SSe narra la historia de un maestro que dejó una profunda huella en sus estudiantes con su alegría y enseñanzas. Tras su repentina muerte, el dolor y la culpa invaden a quienes lo conocieron, pero al recordar sus palabras, encuentran fuerzas para seguir adelante y descubrir que siempre hay esperanza después de la tristeza.</p>
+            <a class="btn btn-leer" id="link-leer-5">Leer cuento completo →</a>
+        </div>
+    </div>
+    <a class="btn btn-volver mt-3" id="link-volver-5">← Volver</a>
+</div>
+
+<!--cuento 5 - completo-->
+<div class="container seccion seccion-oculta" id="cuento-5-completo">
+    <h1 class="cuento-titulo">Por Más Triste Que Sea La Noche La Alegría Vendrá En La Mañana</h1>
+    <small class="cuento-autor">Por: Robert Jhoan Rodriguez</small>
+    <p class="cuento-texto">
+       La vida es un camino uno muy largo y aparecemos en él en el inicio de ese camino camino donde hay alegría momentos buenos unos demasiado buenos y otros tristes y malos donde brotan lágrimas donde el llanto es el quebranto que hay dentro de ti donde el camino es borroso donde la oscuridad de la noche te domina cuando sientes que lo has perdido todo pero ese momento llega de imprevisto y te hace dudar y no piensas en otra cosa te culpas porque pudiste evitarlo pero no lo hiciste y te atormentas y el brillo de tus ojos se apaga pero ahí queda una pequeña chispa de fe de que cambiaría todo y sonríes
+
+Contaré un pequeño fragmento de mi vida un momento de oscuridad un momento que no que no solo me dolió a mí sino a toda una comunidad de jóvenes y adultos donde el llanto salió a la luz de corazones de piedra con rotos donde por primera vez sentí el dolor de perder a un amigo un desgraciado un sabio un comediante al mejor el mejor de este tipo de personas que nunca piensas que te apegarás a ellas pero pasa
+
+Conocí a aquella persona en donde los jóvenes supuestamente vamos a aprender aunque solo los comprometidos salimos con conocimiento de aquel lugar el resto es como un zancuero que se pegan al que tiene un poco de interés en el estudio y era un primer día donde la ricocha onda con los amigos y compañeros que conoces desde años pasados años que no vuelven años de un proceso
+
+Pero no nos desviemos del tema esta persona le diremos en la cama la cama era el mejor cuando lo conocí por primera vez la verdad me caía un poco raro por qué porque no entendía su forma de ser y creo que así pensamos todos sus aprendices en esos primeros días pero se notaba ese cambio en nosotros y no era para mal cada vez que en la cama entraba al salón era para sacarnos una sonrisa al nivel que para mí fue un amigo aunque fuera mi maestro él era un destello de luz en esa oscuridad donde nosotros fuimos los alumbrados por su conocimiento y compasión y cariño y afecto hacia sus estudiantes pero al finalizar el año donde lo pasamos bien donde tuvimos un cambio tanto en disciplina como en actitud donde alcanzamos el nivel de madurez que no pensamos llegar a tener lo logramos al otro año fue distinto la cama lo habían transferido otra sede pero aún había quedado su obra bien hecha pues lo que plantó en nosotros dio fruto la verdad yo lo extrañé mucho pero no sabía qué hacer no sabía qué decir o qué hablar pronto después de una cama partió de esta tierra eso me terminó de partir el corazón se hizo polvo y ese dolor nos inundó a todos la atmósfera cambió por completo el llanto que nunca había visto en la historia de este lugar ese día nos llenó pasé muchos días preguntándole a Dios qué hubiera pasado si lo hubiera visitado esas fueron las noches más tristes que he tenido
+
+Pero en un momento me acordé de las palabras que él decía cuando hablábamos y tome fuerzas y me levanté sabiendo que él no hubiera querido que nos rindieramos que nos pusiéramos tristes y perdiéramos la fe y la paz de Dios me llenó en ese momento y me acordé que al final siempre hay una luz de esperanza y por más que en la noche venga el llanto la alegría vendrá en la mañana por eso te digo no te rindas levántate sonríe que la alegría de verdad cura el alma
+    </p>
+    <a class="btn btn-volver mt-4" id="link-volver-5c">← Volver al resumen</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<!--javascript-->
+<script>
+
+    // Lista de todas las secciones
+    const secciones = [
+        'inicio', 'hero', 'novedades', 'archivo',
+        'cuento-1', 'cuento-1-completo',
+        'cuento-2', 'cuento-2-completo',
+        'cuento-3', 'cuento-3-completo',
+        'cuento-4', 'cuento-4-completo',
+        'cuento-5', 'cuento-5-completo'
+    ];
+
+    // Función para ocultar todo y mostrar solo una sección
+    function mostrar(id) {
+        secciones.forEach(function(s) {
+            document.getElementById(s).classList.add('seccion-oculta');
+        });
+        document.getElementById(id).classList.remove('seccion-oculta');
+    }
+
+    // Navbar
+    document.getElementById('link-inicio').addEventListener('click', function() { mostrar('inicio'); });
+    document.getElementById('link-hero').addEventListener('click', function() { mostrar('hero'); });
+    document.getElementById('link-novedades').addEventListener('click', function() { mostrar('novedades'); });
+    document.getElementById('link-archivo').addEventListener('click', function() { mostrar('archivo'); });
+
+    // Dropdown cuentos (resumen)
+    document.getElementById('link-cuento_1').addEventListener('click', function() { mostrar('cuento-1'); });
+    document.getElementById('link-cuento_2').addEventListener('click', function() { mostrar('cuento-2'); });
+    document.getElementById('link-cuento_3').addEventListener('click', function() { mostrar('cuento-3'); });
+    document.getElementById('link-cuento_4').addEventListener('click', function() { mostrar('cuento-4'); });
+    document.getElementById('link-cuento_5').addEventListener('click', function() { mostrar('cuento-5'); });
+
+    // Botones "Leer completo"
+    document.getElementById('link-leer-1').addEventListener('click', function() { mostrar('cuento-1-completo'); });
+    document.getElementById('link-leer-2').addEventListener('click', function() { mostrar('cuento-2-completo'); });
+    document.getElementById('link-leer-3').addEventListener('click', function() { mostrar('cuento-3-completo'); });
+    document.getElementById('link-leer-4').addEventListener('click', function() { mostrar('cuento-4-completo'); });
+    document.getElementById('link-leer-5').addEventListener('click', function() { mostrar('cuento-5-completo'); });
+
+    // Botones "Volver" desde resumen → inicio
+    document.getElementById('link-volver-1').addEventListener('click', function() { mostrar('inicio'); });
+    document.getElementById('link-volver-2').addEventListener('click', function() { mostrar('inicio'); });
+    document.getElementById('link-volver-3').addEventListener('click', function() { mostrar('inicio'); });
+    document.getElementById('link-volver-4').addEventListener('click', function() { mostrar('inicio'); });
+    document.getElementById('link-volver-5').addEventListener('click', function() { mostrar('inicio'); });
+
+    // Botones "Volver al resumen" desde completo → resumen
+    document.getElementById('link-volver-1c').addEventListener('click', function() { mostrar('cuento-1'); });
+    document.getElementById('link-volver-2c').addEventListener('click', function() { mostrar('cuento-2'); });
+    document.getElementById('link-volver-3c').addEventListener('click', function() { mostrar('cuento-3'); });
+    document.getElementById('link-volver-4c').addEventListener('click', function() { mostrar('cuento-4'); });
+    document.getElementById('link-volver-5c').addEventListener('click', function() { mostrar('cuento-5'); });
+
+</script>
+
+<!--footer-->
+<footer id="footer">
+    <p class="mb-0">Archivo Hueco</p>
+    <small>Hecho con ❤️ por estudiantes · © 2026</small>
+</footer>
+</body>
+</html>
